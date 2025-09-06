@@ -91,7 +91,11 @@ if st.button("🔍 Find Nearest Pandals", type="primary"):
     else:
         with st.spinner("🔍 Calculating distances to all pandals..."):
             df["Distance_km"] = df.apply(lambda row: haversine(lat, lon, row["latitude"], row["longitude"]), axis=1)
-            nearest = df.sort_values("Distance_km").head(10)  # Show top 10 instead of 5
+            
+            # Apply road factor (tune this number, e.g., 1.3 for Kolkata)
+            ROAD_FACTOR = 1.3
+            df["Estimated_Road_km"] = df["Distance_km"] * ROAD_FACTOR
+            nearest = df.sort_values("Estimated_Road_km").head(10)  # Show top 10 instead of 5
         
         st.subheader("🏮 Nearest Pandals to Your Location:")
         
@@ -105,7 +109,7 @@ if st.button("🔍 Find Nearest Pandals", type="primary"):
                 with col2:
                     st.markdown(f"**{row['name']}**")
                     st.markdown(f"📍 Area: {row['area']}")
-                    st.markdown(f"🚶‍♂️ Distance: **{row['Distance_km']:.2f} km**")
+                    st.markdown(f"🚶‍♂️ Distance: **{row['Estimated_Road_km']:.2f} km**")
                 
                 with col3:
                     st.markdown(f"[�️ Maps](https://www.google.com/maps/search/?api=1&query={row['latitude']},{row['longitude']})")
@@ -114,16 +118,16 @@ if st.button("🔍 Find Nearest Pandals", type="primary"):
                 st.divider()
         
         # Show some statistics
-        st.subheader("📊 Statistics:")
+        st.subheader("📊Estimated Statistics:")
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("Closest Pandal", f"{nearest.iloc[0]['Distance_km']:.2f} km")
+            st.metric("Closest Pandal(℮)", f"{nearest.iloc[0]['Estimated_Road_km']:.2f} km")
         
         with col2:
-            st.metric("Farthest (in top 10)", f"{nearest.iloc[-1]['Distance_km']:.2f} km")
+            st.metric("Farthest (in top 10)(℮)", f"{nearest.iloc[-1]['Estimated_Road_km']:.2f} km")
         
         with col3:
-            within_5km = len(nearest[nearest['Distance_km'] <= 5])
+            within_5km = len(nearest[nearest['Estimated_Road_km'] <= 5])
             st.metric("Within 5km", f"{within_5km} pandals")
 
