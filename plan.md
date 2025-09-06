@@ -23,3 +23,14 @@ Directions links open correctly.
 Map shows points in the right city.
 Optional: auto-detect user location.
 Deployed to Streamlit Cloud.
+
+# Estimated statistics
+## Hybrid filtering:
+--Use Haversine to get the closest ~30 pandals.
+--Then sort those by estimated road distance using Google Maps URL call (but not fetching from API, just constructing the link).
+--This way the final “top 10” are already close to what Google Maps will suggest.
+
+## Optional: Precompute approximate “road factor”  (Check line 96 in reference.py)
+--In a dense city like Kolkata, the road distance is usually ~1.2× to 1.4× haversine distance.
+--You could apply a multiplier to give a more realistic estimated road distance.
+
