@@ -25,9 +25,8 @@ st.markdown("Find the closest Durga Puja pandals from your location")
 
 # Add some information about how to get coordinates
 st.info("💡 **How to get your coordinates:**\n"
-        "1. **Click 'Detect My Location' below** (automatic)\n"
-        "2. Open Google Maps → Long press your location → Copy coordinates\n"
-        "3. Use any GPS app on your phone")
+        "1. **Click 'Detect My Location' button below** (automatic)\n"
+        "2. If option 1 doesn't work, Open Google Maps → Long press your location → Copy from search bar\n")
 
 # Simple location detection
 if st.button("📍 Detect My Location", type="primary", help="Get your current coordinates automatically"):
@@ -109,10 +108,10 @@ if st.button("🔍 Find Nearest Pandals", type="primary"):
                 with col2:
                     st.markdown(f"**{row['name']}**")
                     st.markdown(f"📍 Area: {row['area']}")
-                    st.markdown(f"🚶‍♂️ Distance: **{row['Estimated_Road_km']:.2f} km**")
+                    st.markdown(f"🚶‍♂️ Estimated Distance: **{row['Estimated_Road_km']:.2f} km**")
                 
                 with col3:
-                    st.markdown(f"[�️ Maps](https://www.google.com/maps/search/?api=1&query={row['latitude']},{row['longitude']})")
+                    st.markdown(f"[🗺️ Go to Map](https://www.google.com/maps/search/?api=1&query={row['latitude']},{row['longitude']})")
                     st.markdown(f"[🧭 Directions](https://www.google.com/maps/dir/?api=1&destination={row['latitude']},{row['longitude']})")
                 
                 st.divider()
